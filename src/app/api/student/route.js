@@ -37,3 +37,53 @@ export async function POST(req) {
     }, { status: 400 });
   }
 }
+
+export async function PUT(req, res) {
+  try {
+    const body = await json();
+    const parseId = parseInt(req.params.id);
+    const {Nama, Alamat, NoHp} = body;
+
+    const updateData = {
+      Nama,
+      Alamat,
+      NoHp
+    }
+
+    await prisma.student.update({
+      where: {id: parseId},
+      data: updateData
+    });
+
+    return NextResponse.json({
+      statusCode: 200,
+      message: "Successfully update student data"
+    });
+  } catch(error) {
+    console.error("Error : ", error);
+    return NextResponse.json({
+      statusCode: 404,
+      message: "Failed to update the data!"
+    });
+  }
+}
+
+export async function DELETE(req, res) {
+  try {
+    const parsedId = parseInt(req.params.id);
+    await prisma.student.delete({
+      where: {id: parsedId}
+    });
+
+    return NextResponse.json({
+      statusCode: 200,
+      message: "Success delete the data!"
+    });
+  } catch(error) {
+    console.error("Error : ", error);
+    return NextResponse.json({
+      statusCode: 401,
+      message: "Failed to delete the data!"
+    });
+  }
+}

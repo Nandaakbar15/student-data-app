@@ -16,10 +16,10 @@ export function BtnAdd() {
     );
 }
 
-export function BtnDelete() {
+export function BtnDelete({onClick}) {
   return (
     <div className='button-delete'>
-      <button className='btn btn-danger'>Hapus</button>
+      <button className='btn btn-danger' onClick={onClick}>Hapus</button>
     </div>
   );
 }

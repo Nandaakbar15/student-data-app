@@ -7,10 +7,12 @@
 import { BtnDelete } from "@/components/Button";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [students, setStudent] = useState([]);
+  const router = useRouter();
 
   const fetchStudent = async() => {
     try {
@@ -19,6 +21,22 @@ export default function Home() {
     } catch(error) {
       console.error("Error : ", error);
       console.error("Detail Error : ", error.response?.data);
+    }
+  }
+
+  const deleteStudent = async(id) => {
+    try {
+      const response = await axios.delete(`/api/student/${id}`);
+      console.log(response);
+
+      alert('Data successfully deleted!');
+      router.push('/');
+
+      // refresh the data
+      fetchStudent();
+      
+    } catch(error) {
+      console.error("Error : ", error);
     }
   }
 
@@ -47,10 +65,10 @@ export default function Home() {
               <td>{data.Alamat}</td>
               <td>{data.NoHp}</td>
               <td>
-                <button className="btn btn-primary">Edit</button>
+                <Link href={`/api/student/${data.id}`} className="btn btn-primary">Edit</Link>
               </td>
               <td>
-                <BtnDelete/>
+                <BtnDelete onClick={() => deleteStudent(data.id)}/>
               </td>
             </tr>
           )))}
