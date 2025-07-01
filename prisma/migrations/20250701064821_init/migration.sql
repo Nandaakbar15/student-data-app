@@ -1,0 +1,9 @@
+-- CreateTable
+CREATE TABLE `Student` (
+    `Id` INTEGER NOT NULL AUTO_INCREMENT,
+    `Nama` VARCHAR(191) NOT NULL,
+    `Alamat` VARCHAR(191) NOT NULL,
+    `NoHp` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`Id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
