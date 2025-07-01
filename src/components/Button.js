@@ -32,4 +32,12 @@ export function BtnUpdate() {
   );  
 }
 
+export function BtnBack() {
+  return (
+    <div className='button-back'>
+      <button className='btn btn-secondary'>Back</button>
+    </div>
+  );
+}
+
 export default Button

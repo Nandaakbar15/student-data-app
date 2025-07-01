@@ -9,9 +9,12 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Modal from "@/components/Modal";
 
 export default function Home() {
   const [students, setStudent] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [message, setMessage] = useState("");
   const router = useRouter();
 
   const fetchStudent = async() => {
@@ -27,11 +30,15 @@ export default function Home() {
   const deleteStudent = async(id) => {
     try {
       const response = await axios.delete(`/api/student/${id}`);
-      console.log(response);
+      // console.log(response);
+      setShowModal(true);
+      setMessage(response.data.message);
 
-      alert('Data successfully deleted!');
-      router.push('/');
-
+      setTimeout(() => {
+        setShowModal(false);
+        router.push('/');
+      }, 2000);
+      
       // refresh the data
       fetchStudent();
       
@@ -48,7 +55,7 @@ export default function Home() {
     <div className="container mt-5">
       <div className="row">
         <h1>Daftar Siswa</h1>
-        <Link href={'/add-student'} className="btn btn-primary"><h2>Tambah Siswa</h2></Link>
+        <h2><Link className="btn btn-primary" href={'/add-student'}>Tambah Siswa</Link></h2>
         <table className="table">
         <thead>
           <tr>
@@ -65,7 +72,7 @@ export default function Home() {
               <td>{data.Alamat}</td>
               <td>{data.NoHp}</td>
               <td>
-                <Link href={`/api/student/${data.id}`} className="btn btn-primary">Edit</Link>
+                <Link href={`/update-student/${data.id}`} className="btn btn-primary">Edit</Link>
               </td>
               <td>
                 <BtnDelete onClick={() => deleteStudent(data.id)}/>
@@ -74,6 +81,7 @@ export default function Home() {
           )))}
         </tbody>
       </table>
+      {showModal && <Modal show={showModal} onClose={() => setShowModal(false)} message={message} />}
       </div>
     </div>
   );
